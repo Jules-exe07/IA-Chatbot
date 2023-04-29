@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<html class="black-background">
+<head>
+  <!-- Set character encoding and page title -->
+  <meta charset="UTF-8">
+  <title>BotLabs</title>
+  
+  <!-- Import CSS stylesheet -->
+  <link rel="stylesheet" type="text/css" href="/static/style.css">
+  
+  <!-- Import Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Import jQuery library -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+  <!-- Popup element -->
+  <div class="popup" id="popup-1">
+    <div class="overlay"></div>
+    <div class="content">
+      <div class="close-btn" onclick="togglePopup()">&times;</div>
+      <style>
+        h2 {
+          margin-bottom: 50px;
+        }
+        p {
+          margin-bottom: 50px;
+        }
+
+        
+      </style>
+      
+      <!-- Popup content -->
+      <h1>BotLabs:</h1> <h2> es una compañía de investigación. Nuestra misión es revolucionar la forma en que las empresas se comunican con sus clientes a través del poder del procesamiento del lenguaje natural. </h2>
+
+      <img src="../static/handRobot.jpg" alt="image" class="popup-image">
+      
+      <p><b>En la actualidad, los chatbots son una herramienta muy útil para las empresas, ya que les permiten ofrecer una atención al cliente eficiente y rápida las 24 horas del día, los 7 días de la semana.
+      
+        Sin embargo, los chatbots actuales pueden ser limitados en su capacidad para entender y responder adecuadamente a las preguntas y consultas de los clientes. Es aquí donde entramos nosotros. Al usar modelos avanzados de lenguaje como ChatGPT-3, podemos mejorar significativamente la capacidad de los chatbots para entender y responder a las preguntas y consultas de los clientes.
+        
+        Nuestro enfoque se basa en el entrenamiento de los chatbots con información específica de cada negocio, lo que nos permite personalizar la experiencia del cliente y proporcionar soluciones precisas y eficaces. Creemos firmemente que la actualización de los chatbots es esencial para mantener una interacción efectiva y satisfactoria con los clientes, lo que se traduce en una mayor satisfacción del cliente y una mejora en los resultados empresariales.
+        
+        En resumen, nuestra compañía está dedicada a ayudar a otras empresas a mejorar la calidad de su atención al cliente a través de la implementación de chatbots avanzados entrenados con modelos de lenguaje de última generación. Estamos seguros de que podemos ayudar a su empresa a mejorar la interacción con sus clientes y a impulsar su éxito empresarial.</b></p>
+
+      <h3 style="text-align:left">Estado actual del bot</h3>
+      <p>El bot que se puede usar en nuestra página web no esta entrenado. Por lo general responde cosas sin sentido.</p>
+      
+      <!-- Contact form -->
+      <div class="contact-form">
+        <h3 style="text-align:center">Contacto</h3>
+        <form>
+          <label for="name">Nombre:</label>
+          <input type="text" id="name" name="name" required>
+    
+        <label for="email">Correo electrónico:</label>
+        <input type="email" id="email" name="email" required>
+    
+        <label for="message">Mensaje:</label>
+        <textarea id="message" name="message" required></textarea>
+    
+        <button type="submit">Enviar</button>
+      </form>
+    </div>   
+
+</div>
+
+<!-- This is a button to toggle a popup with information about the website -->
+<button onclick="togglePopup()" class="btn-top-right">
+  <span class="btn-top-right-text">¿Quiénes somos?</span>
+</button>
+
+<!-- This is a banner for the website -->
+<div class="banner"></div>
+  <div class="banner-text">
+    <h1>Únete al avance</h1>
+    <p>Evoluciona tu Chatbot</p>
+  </div>
+
+<!-- This is a container for the chatbot window -->
+<div class="container">
+  <div class="chat-window">
+        <div class="chatbox__header">
+            <div class="chatbox__image--header">
+                <img src="static/Chatbot_img.png" alt="image">
+            </div>
+            <div class="chatbox__content--header">
+              <h3 class="chatbox__heading--header">ZIF</h3>
+              <p class="chatbox__description--header">¡tu asistente virtual!</p>
+          </div>
+        </div>
+  </div>
+</div>
+
+<!-- This is the section to display messages in the chat window -->
+<div>
+  <div>
+    {% for message in conversation %}
+      <div class="message {{ message.type }}">{{ message.text }}</div>
+    {% endfor %}
+    {% if response %}
+      <div class="message chatbot-message">{{ response }}</div>
+    {% endif %}
+  </div>
+  <!-- This is the form for users to enter messages to the chatbot -->
+  <form class="chat-form" action="/" method="post">
+    <input type="text" class="message" name="message" placeholder="¿Necesitas algo?">
+    <button type="submit">Enviar</button> 
+  </form>
+</div>
+
+<!-- This script clears the chat form input after submission -->
+<script>
+  document.querySelector('.chat-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var messageInput = document.querySelector('.message');
+    messageInput.value = '';
+  });
+</script>
+
+<!-- This script sends messages to the chatbot and displays responses -->
+<script>
+  $('.chat-form').submit(function(event) {
+    event.preventDefault();
+
+    $.ajax({
+      type: 'POST',
+      url: '/',
+      data: $(this).serialize(),
+      success: function(response) {
+        $('.chat-window').append(
+          '<div class="message user-message">' + response.message + '</div>' +
+          '<div class="message chatbot-message">' + response.response + '</div>'
+        );
+        messageInput.value = '';
+      }
+    });
+  });
+</script>
+    
+</body>
+</html>
